@@ -28,10 +28,17 @@ jobs:
         run: |
           set -e
           mkdir -p zygisk
-          cp jni/libs/arm64-v8a/liboplusfwk_scrubber.so zygisk/arm64-v8a.so
+          SO_PATH=$(find . -name 'liboplusfwk_scrubber.so' -print -quit)
+          if [ -z "$SO_PATH" ]; then
+            echo "ERROR: liboplusfwk_scrubber.so not found after ndk-build. Full tree:"
+            find . -not -path './.git/*'
+            exit 1
+          fi
+          echo "Found built library at: $SO_PATH"
+          cp "$SO_PATH" zygisk/arm64-v8a.so
           zip -r OplusFwkBootclasspathScrubber.zip \
             module.prop customize.sh uninstall.sh README.md zygisk jni \
-            -x "jni/obj/*" "jni/libs/*"
+            -x "jni/obj/*" "jni/libs/*" "obj/*" "libs/*"
 
       - name: Upload flashable module zip
         uses: actions/upload-artifact@v4

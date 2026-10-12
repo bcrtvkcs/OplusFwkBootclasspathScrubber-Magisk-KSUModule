@@ -38,14 +38,18 @@ This repo ships source only - you need to compile `zygisk/arm64-v8a.so`
 yourself with the Android NDK before zipping the module:
 
 ```bash
-cd jni
-ndk-build
-# produces libs/arm64-v8a/liboplusfwk_scrubber.so
-mkdir -p ../zygisk
-cp libs/arm64-v8a/liboplusfwk_scrubber.so ../zygisk/arm64-v8a.so
-cd ..
-zip -r OplusFwkBootclasspathScrubber.zip module.prop customize.sh uninstall.sh zygisk jni README.md -x "jni/obj/*" "jni/libs/*"
+cd jni && ndk-build && cd ..
+# ndk-build places its output one level up from jni/, i.e. at the project
+# root: ./libs/arm64-v8a/liboplusfwk_scrubber.so (and ./obj/...), not
+# inside jni/ itself.
+mkdir -p zygisk
+cp libs/arm64-v8a/liboplusfwk_scrubber.so zygisk/arm64-v8a.so
+zip -r OplusFwkBootclasspathScrubber.zip module.prop customize.sh uninstall.sh zygisk jni README.md -x "jni/obj/*" "jni/libs/*" "obj/*" "libs/*"
 ```
+
+(This repo's `.github/workflows/build.yml` runs the same build in CI on
+every push and locates the built `.so` with `find` instead of a
+hardcoded path, so it isn't sensitive to this detail.)
 
 (`jni/` itself does not need to ship inside the flashable zip; it's only
 kept here for reference/rebuilds. Feel free to drop it from the zip you
