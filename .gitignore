@@ -2,3 +2,7 @@ jni/obj/
 jni/libs/
 zygisk/
 *.zip
+# CI commits its build output here on purpose (see .github/workflows/build.yml) -
+# exempt it from the ignores above.
+!dist/
+!dist/*

@@ -5,6 +5,9 @@ on:
     branches: [ main, master ]
   workflow_dispatch: {}
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -51,3 +54,24 @@ jobs:
         with:
           name: arm64-v8a.so
           path: zygisk/arm64-v8a.so
+
+      # actions/upload-artifact downloads redirect through Azure Blob
+      # Storage, which isn't reachable from the environment that needs
+      # this build output - so also publish it the plain-git way: commit
+      # the built files straight into the repo. [skip ci] keeps this
+      # push from re-triggering the build and looping.
+      - name: Publish build output via git
+        run: |
+          set -e
+          mkdir -p dist
+          cp OplusFwkBootclasspathScrubber.zip dist/
+          cp zygisk/arm64-v8a.so dist/
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f dist
+          if git diff --cached --quiet; then
+            echo "Nothing new to publish."
+          else
+            git commit -m "ci: publish build output for ${{ github.sha }} [skip ci]"
+            git push
+          fi
