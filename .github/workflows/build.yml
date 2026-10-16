@@ -70,16 +70,13 @@ jobs:
       - name: Publish build output via git
         run: |
           set -e
-          (cd module && zip -r ../dist_OplusFwkBootclasspathScrubber.zip .)
           mkdir -p dist
-          mv dist_OplusFwkBootclasspathScrubber.zip dist/OplusFwkBootclasspathScrubber.zip
+          rm -f dist/*.zip
+          # Named to match the GitHub Release asset this project publishes
+          # under (see update.json's zipUrl) - each new release is just
+          # "download this one file, upload it as the asset, tag it".
+          (cd module && zip -r ../dist/OplusFwkBootclasspathScrubber-Magisk-KSUModule-main.zip .)
           cp module/zygisk/arm64-v8a.so dist/
-          # Same content, named to match the GitHub Release asset this
-          # project publishes under (see update.json's zipUrl) - makes
-          # each new release just "download this, upload as the asset,
-          # tag it".
-          cp dist/OplusFwkBootclasspathScrubber.zip \
-            dist/OplusFwkBootclasspathScrubber-Magisk-KSUModule-main.zip
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -f dist
