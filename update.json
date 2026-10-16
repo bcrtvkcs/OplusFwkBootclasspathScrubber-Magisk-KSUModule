@@ -1,6 +1,6 @@
 {
-  "version": "1.0",
+  "version": "0.0.1",
   "versionCode": 1,
-  "zipUrl": "https://raw.githubusercontent.com/bcrtvkcs/OplusFwkBootclasspathScrubber-Magisk-KSUModule/main/dist/OplusFwkBootclasspathScrubber.zip",
+  "zipUrl": "https://github.com/bcrtvkcs/OplusFwkBootclasspathScrubber-Magisk-KSUModule/releases/download/v0.0.1/OplusFwkBootclasspathScrubber-Magisk-KSUModule-main.zip",
   "changelog": "https://raw.githubusercontent.com/bcrtvkcs/OplusFwkBootclasspathScrubber-Magisk-KSUModule/main/changelog.md"
 }

@@ -1,6 +1,6 @@
 id=OplusFwkBootclasspathScrubber
 name=OplusFwk Bootclasspath Scrubber
-version=1.0
+version=0.0.1
 versionCode=1
 author=BCRTVKCS
 description=Via a Zygisk postAppSpecialize hook, removes /system/framework/oplus-fwk.jar from BOOTCLASSPATH/DEX2OATBOOTCLASSPATH as seen only by an explicit allowlist of target processes (edit kTargetProcesses in jni/main.cpp to change it). Every other process, including system_server and OnePlus Camera, keeps the real, unmodified classpath.
